@@ -28,7 +28,9 @@ public class EjerciciosPracticos {
                  3 = Total a pagar
                  4 = Divisible por 5
                  5 = Numero factorial
-                 6 = Decodificar
+                 6 = Decodificarr
+                 7 = Calcular area de un triangulo
+                 8 = Crear matriz
                  """;
         System.out.println(cadena);
         int opcion = ss.nextInt();
@@ -38,7 +40,9 @@ public class EjerciciosPracticos {
             case  3 -> sc.SueldoEmpleado();
             case  4 -> sc.divisible5();
             case  5 -> sc.factorial();
-            case  6 -> sc.Decodificador();      
+            case  6 -> sc.Decodificador();  
+            case  7 -> sc.CalcuarAreaTriangulo();
+            case  8 -> sc.CrearMatriz();
             
             default -> throw new AssertionError();
         }
