@@ -21,13 +21,25 @@ public class Persona {
     private int edad;
     private double peso;
     private String sexo;
+    private int dinero;
 
-    public Persona(String nombre, int edad, double peso, String sexo) {
+    public Persona(String nombre, int edad, double peso, String sexo, int dinero) {
         this.id = ++lastId;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
         this.sexo = sexo;
+        this.dinero = dinero;
+        
+    
+    }
+
+    public int getDinero() {
+        return dinero;
+    }
+
+    public void setDinero(int dinero) {
+        this.dinero = dinero;
     }
 
     public int getId() {
@@ -49,6 +61,12 @@ public class Persona {
     public String getSexo() {
         return sexo;
     }
+     static {
+        // Inicializar algunas personas predeterminadas
+        personas.add(new Persona("Juan", 25, 70.5, "Masculino", 1500));
+        personas.add(new Persona("Maria", 30, 65.0, "Femenino", 2300));
+        personas.add(new Persona("Luis", 20, 80.0, "Masculino", 1200));
+    }
 
     public static void crearPersona() {
         Scanner sc = new Scanner(System.in);
@@ -62,11 +80,11 @@ public class Persona {
             try {
                 System.out.println("Ingrese edad:");
                 edad = sc.nextInt();
-                sc.nextLine(); // Consumir el carácter de nueva línea restante
+                sc.nextLine(); 
                 edadValida = true;
             } catch (Exception e) {
                 System.out.println("Edad ingresada inválida. Intente nuevamente.");
-                sc.nextLine(); // Consumir el carácter de nueva línea restante
+                sc.nextLine();
             }
         }
 
@@ -76,18 +94,22 @@ public class Persona {
             try {
                 System.out.println("Ingrese peso:");
                 peso = sc.nextDouble();
-                sc.nextLine(); // Consumir el carácter de nueva línea restante
+                sc.nextLine(); 
                 pesoValido = true;
             } catch (Exception e) {
                 System.out.println("Peso ingresado inválido. Intente nuevamente.");
-                sc.nextLine(); // Consumir el carácter de nueva línea restante
+                sc.nextLine();
             }
         }
 
         System.out.println("Ingrese sexo:");
+        
         String sexo = sc.nextLine();
-
-        Persona nuevaPersona = new Persona(nombre, edad, peso, sexo);
+        
+        System.out.println("Ingrese cunato dinero tiene");
+        int dinero =sc.nextInt();
+        
+        Persona nuevaPersona = new Persona(nombre, edad, peso, sexo, dinero);
         personas.add(nuevaPersona);
 
         System.out.println("Persona creada con ID: " + nuevaPersona.getId());
@@ -100,7 +122,8 @@ public class Persona {
                 ", nombre='" + nombre + '\'' +
                 ", edad=" + edad +
                 ", peso=" + peso +
-                ", sexo='" + sexo + '\'' +
+                ", sexo=" + sexo + 
+                ", dinero= $'" +dinero+ '\'' +
                 '}';
     }
 
@@ -118,24 +141,62 @@ public class Persona {
             }
         }
     }
-    public static void eliminarPersona(){
-         Scanner sc = new Scanner(System.in);
-         System.out.println("Ingre el Id de la persona que desea elinar: ");
-       int idEliminar = sc.nextInt();
-       sc.nextLine();
-       boolean personaEncontrada = false;
-        for (Persona persona : personas) {
-            if(persona.getId() == idEliminar){
-                personas.remove(persona);
-                personaEncontrada = true;
-                System.out.println("Persona eliminada correctamente");
-                break;
+    public static Persona BuscarPersonaId(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese el Id de la persona que desea buscar: ");
+        int idBuscar = sc.nextInt();
+        sc.nextLine();
+        
+        for(Persona persona : personas){
+            if(persona.getId() == idBuscar){
+               // personaEncontrada=true;
+                System.out.println("La persona con este ID es: "+persona);
+                return persona;
             }
             
+          
+        
         }
-        if(!personaEncontrada){
-            System.out.println("No se encontro a la personas con ese Id");
+          System.out.println("No se encontro a la personas con ese Id");
+            return null;
+    }
+    // aca reutilizamos el metodo BuscarPersonaId, para eliminarla
+    public static void eliminarPersona() {
+        Persona persona = BuscarPersonaId();
+        if (persona != null) {
+            personas.remove(persona);
+            System.out.println("Persona eliminada correctamente");
+        } else {
+            System.out.println("No se pudo eliminar la persona porque no se encontró");
         }
-       
+    }
+    
+    public static void agregarDinero(){
+        Scanner sc = new Scanner(System.in);
+       Persona persona = BuscarPersonaId();
+        System.out.println("Cuanto dinero desea extraerle a: "+ persona);
+       if (persona != null){
+           int ingreso = sc.nextInt();
+           persona.dinero= persona.dinero+ingreso;
+          persona.getDinero();
+           System.out.println(persona.getNombre()+"tine: $"+persona.getDinero());
+       }
+                
+    }
+    public static void quitarDinero(){
+           Scanner sc = new Scanner(System.in);
+       Persona persona = BuscarPersonaId();
+        System.out.println("Cuanto dinero desea agregarle a: "+ persona);
+       if (persona != null){
+           int egreso = sc.nextInt();
+        if(egreso<= persona.dinero){  
+           
+           persona.dinero= persona.dinero-egreso;
+          persona.getDinero();
+           System.out.println(persona.getNombre()+"tine: $"+persona.getDinero());
+           } else{
+            System.out.println("No es posible extrae ese monto en la cuenta tiene $"+ persona.dinero);
+        }
+       }
     }
 }
